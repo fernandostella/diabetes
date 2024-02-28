@@ -3,7 +3,7 @@
 # Disciplina:   Implantação
 # Professor:    Dr. Felipe de Morais
 # Alunos:       Fernando Stella
-#               Sidnei  
+#               Sedinei Lopes Copatti
 ################################################
 import streamlit as st
 import pandas as pd
