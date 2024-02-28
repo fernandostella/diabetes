@@ -3,7 +3,7 @@
 # Disciplina:   Implantação
 # Professor:    Dr. Felipe de Morais
 # Alunos:       Fernando Stella
-#               Sedinei Lopes Copatti  
+#               Sedinei Lopes Copatti
 ################################################
 import streamlit as st
 import pandas as pd
@@ -74,32 +74,6 @@ with col2:
 col1, col2 = st.columns(2)
 # Pressão Arterial
 with col1:
-    pressao = st.number_input('Pressão Arterial', step=10, min_value=0)    
-# Espessura da pele 
-with col2:
-    pele = st.number_input('Espessura da pele', step=5, min_value=0)      
-
-# Linha 3 de entrada de dados
-col1, col2 = st.columns(2)
-# Nível de insulina
-with col1:
-    insulina = st.number_input('Insulina', step=100, min_value=0)    
-# IMC
-with col2:
-    imc = st.number_input('IMC',step=0.10, min_value=0.00)        
-
-# Linha 4 de entrada de dados
-col1, col2 = st.columns(2)
-# Pontuação Histórico Familiar
-with col1:
-    hist = st.number_input('Pontuação Histórico Familiar',min_value=0.000, step=0.1)    
-# Idade
-with col2:
-    idade = st.number_input('Idade', step=1, min_value=0)        
-
-# Linha 5 - Botão de conformação
-col1, col2 = st.columns(2)
-with col1:
     submit = st.button('Analisar')
 
 # Guarda os dados do paciente
@@ -115,6 +89,44 @@ if submit or 'Outcome' in st.session_state:
         'SkinThickness': pele,
         'Insulin': insulina,
         'BMI': imc,
+        'DiabetesPedigreeFunction': hist,
+        'Age': idade 
+    }
+    print(paciente)    
+
+    # converte o registo do paciente para pandas dataframe
+    values = pd.DataFrame([paciente])
+    print(values) 
+
+    # Analisa os dados para paciente para diagnósticar a diabetes
+    results = model.predict(values)
+    print(results)
+    
+    # Resultados:
+    # 0) Não diagnosticado 
+    # 1) Diagnosticado 
+    
+    if len(results) == 1:        
+        diagnostico = int(results[0])        
+        # Se o paciente é diabético
+        if diagnostico == 1:            
+            st.subheader('Resultado positivo para diabetes! 🤐🧁')
+            if 'Outcome' not in st.session_state:
+                 st.snow()
+        else:            
+            st.subheader('Resultado negatívo para diabetes! 🙌')
+            if 'Outcome' not in st.session_state:
+                st.balloons()
+        
+        # salva em cache da aplicação o resultado da predição do resultado do paciente
+        st.session_state['Outcome'] = diagnostico
+    
+    # verifica se existe um passageiro e se já foi verificado se ele sobreviveu ou não
+    if paciente and 'Outcome' in st.session_state:
+        # se sim, pergunta ao usuário se a predição está certa e salva essa informação
+        st.write("A predição está correta?")
+        col1, col2, col3 = st.columns([1,1,5])
+        with col1:
             correct_prediction = st.button('👍🏻')
         with col2:
             wrong_prediction = st.button('👎🏻')
@@ -140,7 +152,7 @@ if submit or 'Outcome' in st.session_state:
             print(message)
             
             # salva a predição no JSON para cálculo das métricas de avaliação do sistema
-            #data_handler.save_prediction(paciente)
+            data_handler.save_prediction(paciente)
             
     st.write('')
     # adiciona um botão para permitir o usuário realizar uma nova análise
