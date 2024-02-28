@@ -9,7 +9,7 @@ def load_data():
 # retorna os dados validados pelo usuário
 def get_all_predictions():
     data = None
-    with open('./predictions.json', 'r') as f:
+    with open('predictions.json', 'r') as f:
         data = json.load(f)        
     return data
 
