@@ -3,7 +3,7 @@
 # Disciplina:   Implantação
 # Professor:    Dr. Felipe de Morais
 # Alunos:       Fernando Stella
-#               Sedinei Lopes Copatti
+#               Sedinei Lopes Copatti  
 ################################################
 import streamlit as st
 import pandas as pd
@@ -73,6 +73,32 @@ with col2:
 # Linha 2 de entrada de dados
 col1, col2 = st.columns(2)
 # Pressão Arterial
+with col1:
+    pressao = st.number_input('Pressão Arterial', step=10, min_value=0)    
+# Espessura da pele 
+with col2:
+    pele = st.number_input('Espessura da pele', step=5, min_value=0)      
+
+# Linha 3 de entrada de dados
+col1, col2 = st.columns(2)
+# Nível de insulina
+with col1:
+    insulina = st.number_input('Insulina', step=100, min_value=0)    
+# IMC
+with col2:
+    imc = st.number_input('IMC',step=0.10, min_value=0.00)        
+
+# Linha 4 de entrada de dados
+col1, col2 = st.columns(2)
+# Pontuação Histórico Familiar
+with col1:
+    hist = st.number_input('Pontuação Histórico Familiar',min_value=0.000, step=0.1)    
+# Idade
+with col2:
+    idade = st.number_input('Idade', step=1, min_value=0)        
+
+# Linha 5 - Botão de conformação
+col1, col2 = st.columns(2)
 with col1:
     submit = st.button('Analisar')
 
